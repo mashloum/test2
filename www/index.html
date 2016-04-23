@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+    <meta charset="utf-8" />
+		<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline';media-src *; img-src * data:; script-src * 'unsafe-inline' 'unsafe-eval' *">
+
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. 
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" /> 
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />  -->
+	
+    <!-- Good default declaration:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+        * Enable inline JS: add 'unsafe-inline' to default-src
+        * Enable eval(): add 'unsafe-eval' to default-src
+    * Create your own at http://cspisawesome.com
+    -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Include jQuery Mobile stylesheets -->
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+
+<!-- Include the jQuery library -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<!-- Include the jQuery Mobile library -->
+<script type="text/javascript" src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+
+
+ <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places,drawing,geometry&key=AIzaSyA03T8SC3bjl0XI5FaFG5hnKVU-pFUnHJ0"></script>
+
+
+<script>
+//var apiKey="AIzaSyA03T8SC3bjl0XI5FaFG5hnKVU-pFUnHJ0";
+
+var myCenter= new google.maps.LatLng(38.947973         , -77.362595); // work 
+var home    = new google.maps.LatLng(38.943714299999996, -77.4067539); // home
+
+function initializeMaps()
+{
+
+
+var mapProp = {
+  center:myCenter,
+  zoom:12,
+  mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+
+var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+var marker=new google.maps.Marker({
+  position:myCenter,
+  });
+
+ marker.setMap(map);
+
+  
+	   var markerH=new google.maps.Marker({
+		position:home
+		});
+		 markerH.setMap(map);
+//var bounds = new google.maps.LatLngBounds();
+	//bounds.extend(marker); 
+	 //bounds.extend(markerH);
+	  //map.fitBounds(bounds);
+      //AutoCenter();
+
+google.maps.event.addListener(markerH, 'click', function() {
+  infowindow.open(map,markerH);
+  });
+	  
+	//  id =  navigator.geolocation.watchPosition : function(position) {
+  // same as above
+  //document.getElementById('distance').innerHTML =
+     // calculateDistance(startPos.coords.latitude, startPos.coords.longitude,
+       //                 position.coords.latitude, position.coords.longitude);
+//}
+
+ 
+var infowindow = new google.maps.InfoWindow({
+  content:"Hello World!"
+  });
+
+google.maps.event.addListener(marker, 'click', function() {
+  infowindow.open(map,marker);
+  });
+
+
+
+}
+// google.maps.event.addDomListener(window, 'load', initializeMaps);  
+</script>
+
+    <title>Hello Amman</title>
+</head>
+
+<body>
+    <div class="app">
+        <h1>PhoneGap</h1>
+        <div id="deviceready" class="blink">
+            <p class="event listening">Connecting to Device</p>
+            <p class="event received">Device is Ready</p>
+        </div>
+    </div>
+	<div id="googleMap" style="width:500px;height:380px;"></div>
+
+	<div id="distance"></div>
+	
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+	$(document).ready(function () {
+  initializeMaps();
+        app.initialize();
+		//app.deg2rad(10);
+		app.getCurrentLocation(); // this worked fine 
+		app.watchPosition();
+	
+});
+	
+		
+    </script>
+	
+</body>
+</html>
