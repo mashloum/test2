@@ -131,7 +131,7 @@ watchPosition  : function() {
 				
  
     $('embed').remove();
-    $('body').append('<embed src="../media/arrived.m4a" autostart="true" hidden="true" loop="false">');
+    $('body').append('<embed src="../media/arrived.mp3" autostart="true" hidden="true" loop="false">');
 
 				
 				//$(...).play is not a function
