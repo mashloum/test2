@@ -129,7 +129,7 @@ watchPosition  : function() {
 			
 			  var x =    app.getDistanceFromLatLonInKm(currentLocation.lat, currentLocation.lng,
                         app.work.lat, app.work.lng);
-	document.getElementById('distance').innerHTML =  " the calculateDistance result is " + x;					
+	document.getElementById('distance').innerHTML = "Counter ( "+ counter +")  the calculateDistance result is " + x;					
 						console.log("distance is " + x );
 			
 			if ( x < 4 ) {
