@@ -143,15 +143,16 @@ watchPosition  : function() {
 					//var audio = new Audio('../media/arrived.mp3');
                    //audio.play();
 
-		var audio = $("#myaudio")[0];
-			
-			 if (audio.paused) {
+  ion.sound.play("bell_ring");      
+/* this is pure html5 worked
+    var audio = $("#myaudio")[0];
+		 if (audio.paused) {
         audio.play();
     }else{
         audio.pause();
         audio.currentTime = 0
     }
-				 //$('#alert').play(); 
+*/				 //$('#alert').play(); 
 			}				 
 				}
 	}, function error(err){

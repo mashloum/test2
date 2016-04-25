@@ -48,6 +48,8 @@
 <!-- Include jQuery Mobile stylesheets -->
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 
+<script type="text/javascript"  src="./js/ion.sound.min.js"></script>
+
 <!-- Include the jQuery library -->
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
@@ -68,6 +70,18 @@ var home    = new google.maps.LatLng(38.943714299999996, -77.4067539); // home
 function initializeMaps()
 {
 
+
+ion.sound({
+    sounds: [
+        {
+            name: "bell_ring"
+        } 
+         
+    ],
+    volume: 0.5,
+    path: "media/",
+    preload: true
+});
 
 var mapProp = {
   center:myCenter,
@@ -145,6 +159,10 @@ google.maps.event.addListener(marker, 'click', function() {
     <script type="text/javascript">
 	$(document).ready(function () {
   initializeMaps();
+          $("#b01").on("click", function(){
+            ion.sound.play("bell_ring");
+        });
+
         app.initialize();
 		//app.deg2rad(10);
 		app.getCurrentLocation(); // this worked fine 
@@ -162,6 +180,9 @@ google.maps.event.addListener(marker, 'click', function() {
   </div>
 
   <div data-role="footer">
+
+    <button id="b01">Play "bell_ring"</button>
+
   <h1>Footer Text</h1>
   <div id="distance"></div>
 
