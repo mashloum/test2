@@ -124,17 +124,22 @@ google.maps.event.addListener(marker, 'click', function() {
 </head>
 
 <body>
-    <div class="app">
+     <div class="app" data-role="page">
+	
+  <div data-role="header">
+    <h1>Welcome To My Homepage</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+    <p>I Am Now A Mobile Developer!!</p>  
         <h1>PhoneGap</h1>
         <div id="deviceready" class="blink">
             <p class="event listening">Connecting to Device</p>
             <p class="event received">Device is Ready</p>
         </div>
-    </div>
-	<div id="googleMap" style="width:500px;height:380px;"></div>
+    	<div id="googleMap" style="width:500px;height:380px;"></div>
 
-	<div id="distance"></div>
-	
+		
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
@@ -149,6 +154,22 @@ google.maps.event.addListener(marker, 'click', function() {
 	
 		
     </script>
+
+	 
+
+
+
+  </div>
+
+  <div data-role="footer">
+  <h1>Footer Text</h1>
+  <div id="distance"></div>
+
+  </div>
+
+</div>
+	
+	
 	
 </body>
 </html>
