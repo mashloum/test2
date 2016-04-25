@@ -8,6 +8,10 @@
   <plugin name="cordova-plugin-battery-status" source="npm"/>
   <plugin name="cordova-plugin-camera" source="npm"/>
   <plugin name="cordova-plugin-media-capture" source="npm"/>
+   
+  <gap:plugin name="org.apache.cordova.media" />
+  
+  
   <plugin name="cordova-plugin-console" source="npm"/>
   <plugin name="cordova-plugin-contacts" source="npm"/>
   <plugin name="cordova-plugin-device" source="npm"/>
