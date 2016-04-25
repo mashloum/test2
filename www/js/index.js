@@ -143,7 +143,14 @@ watchPosition  : function() {
 					//var audio = new Audio('../media/arrived.mp3');
                    //audio.play();
 
-			$("#myaudio")[0].play();
+		var audio = $("#myaudio")[0];
+			
+			 if (audio.paused) {
+        audio.play();
+    }else{
+        audio.pause();
+        audio.currentTime = 0
+    }
 				 //$('#alert').play(); 
 			}				 
 				}
