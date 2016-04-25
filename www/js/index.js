@@ -143,11 +143,7 @@ watchPosition  : function() {
 					//var audio = new Audio('../media/arrived.mp3');
                    //audio.play();
 
-<audio controls="controls">
-<source src="../media/arrived.mp3" type="audio/mpeg">
-Your browser does not support the audio element.
-</source></audio>
-
+			$("#myaudio")[0].play();
 				 //$('#alert').play(); 
 			}				 
 				}
