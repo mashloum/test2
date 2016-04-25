@@ -138,8 +138,15 @@ watchPosition  : function() {
 //	  1 var my_media =  new Media("../media/arrived.wma",function () { console.log("playAudio():Audio Success"); });
 	//2 	my_media.play();
       			//$(...).play is not a function
-					var audio = new Audio('../media/arrived.mp3');
-audio.play();
+				
+				//brlow worked
+					//var audio = new Audio('../media/arrived.mp3');
+                   //audio.play();
+
+<audio controls="controls">
+<source src="../media/arrived.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</source></audio>
 
 				 //$('#alert').play(); 
 			}				 
