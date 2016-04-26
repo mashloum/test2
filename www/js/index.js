@@ -106,8 +106,9 @@ watchPosition  : function() {
   maximumAge: 0
 };
   id = navigator.geolocation.watchPosition(function(position) {
-	       
-			counter++
+	   
+     destination=position;    
+			counter++;
 			console.log("this is in counter : "  + counter );
 			console.log("mywatch latitude :"+position.coords.latitude + "  longtitude : "  + position.coords.longitude);
 			if(previousLocation.lat = 0 ) {
@@ -132,7 +133,7 @@ watchPosition  : function() {
 	document.getElementById('distance').innerHTML = "Counter ( "+ counter +")  the calculateDistance result is " + x;					
 						console.log("distance is " + x );
 			
-			if ( x < 4 ) {
+			if ( x < 0.2 ) {
 				//$('#alert').play();
 		 
 //	  1 var my_media =  new Media("../media/arrived.wma",function () { console.log("playAudio():Audio Success"); });
