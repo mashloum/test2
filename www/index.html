@@ -58,7 +58,7 @@
 
 
 
- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places,drawing,geometry&key=AIzaSyA03T8SC3bjl0XI5FaFG5hnKVU-pFUnHJ0"></script>
+ <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,drawing,geometry&key=AIzaSyA03T8SC3bjl0XI5FaFG5hnKVU-pFUnHJ0"></script>
 
 
 <script>
@@ -66,7 +66,13 @@
 
 var myCenter= new google.maps.LatLng(38.947973         , -77.362595); // work 
 var home    = new google.maps.LatLng(38.943714299999996, -77.4067539); // home
-var markers = [];
+var markers = [
+   ['work', 38.947973         , -77.362595, 2],
+      ['home', 38.943714299999996, -77.4067539, 1] 
+    ];
+
+;
+var bounds = new google.maps.LatLngBounds();
 var map=null;
 
 var destination=new google.maps.Marker({
@@ -83,7 +89,7 @@ var destination=new google.maps.Marker({
 function initializeMaps()
 {
 
-
+// alert("intitialize Maps");
 ion.sound({
     sounds: [
         {
@@ -108,30 +114,36 @@ var mapProp = {
 
  map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
- destination.setMap(map);
-
-  
-		 markerH.setMap(map);
-//var bounds = new google.maps.LatLngBounds();
-	//bounds.extend(marker); 
-	 //bounds.extend(markerH);
-	  //map.fitBounds(bounds);
-      //AutoCenter();
-
-	  
-	//  id =  navigator.geolocation.watchPosition : function(position) {
-  // same as above
-  //document.getElementById('distance').innerHTML =
-     // calculateDistance(startPos.coords.latitude, startPos.coords.longitude,
-       //                 position.coords.latitude, position.coords.longitude);
-//}
-
  
-var infowindow = new google.maps.InfoWindow({
+var infowindow = new google.maps.InfoWindow();
+ var marker, i;
+
+    for (i = 0; i < markers.length; i++) {  
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(markers[i][1], markers[i][2]),
+        map: map
+      });
+
+       // bounds.extend(marker.position);
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(markers[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+
+}}
+
+
+
+ //destination.setMap(map);
+//		 markerH.setMap(map);
+  
+/*var infowindow = new google.maps.InfoWindow({
   content:"Hello World!"
   });
-
-
+*/
+/*
 google.maps.event.addListener(markerH, 'click', function() {
   infowindow.open(map,markerH);
   });
@@ -139,13 +151,14 @@ google.maps.event.addListener(markerH, 'click', function() {
 google.maps.event.addListener(destination, 'click', function() {
   infowindow.open(map,destination);
   });
-
- google.maps.event.addListener(map, 'click', function(event) {
+*/
+// to place marker event 
+ /*google.maps.event.addListener(map, 'click', function(event) {
     placeMarker(event.latLng);
   });
 
-
-}
+*/
+//}
 
 function placeMarker(location) {
   var marker = new google.maps.Marker({

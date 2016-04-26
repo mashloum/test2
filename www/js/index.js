@@ -33,7 +33,7 @@ var app = {
 
     // Application Constructor
     initialize: function() {
-		//alert(home.lat() + " " + home.lng() );
+	//	alert( " app.initialize " +home.lat() + " " + home.lng() );
         this.bindEvents();
     },
 	
@@ -59,11 +59,11 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
+/*        var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
-        console.log('Received Event: ' + id);
+*/        console.log('Received Event: ' + id);
     },
 	
   getDistanceFromLatLonInKm : function(lat1,lon1,lat2,lon2) {
@@ -99,7 +99,8 @@ var app = {
 },
 
 watchPosition  : function() {
-   
+
+console.log("watching ");   
   var options = {
   enableHighAccuracy: false,
   timeout: 5000,
@@ -107,7 +108,15 @@ watchPosition  : function() {
 };
   id = navigator.geolocation.watchPosition(function(position) {
 	   
-     destination=position;    
+     destination.setPosition(
+new google.maps.LatLng(
+            position.coords.latitude,
+            position.coords.longitude)
+      );
+     
+
+ 
+
 			counter++;
 			console.log("this is in counter : "  + counter );
 			console.log("mywatch latitude :"+position.coords.latitude + "  longtitude : "  + position.coords.longitude);
