@@ -144,7 +144,7 @@ watchPosition  : function() {
 					//var audio = new Audio('../media/arrived.mp3');
                    //audio.play();
 
-  ion.sound.play("bell_ring");      
+  ion.sound.play("arrived");      
 /* this is pure html5 worked
     var audio = $("#myaudio")[0];
 		 if (audio.paused) {
