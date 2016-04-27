@@ -66,12 +66,39 @@
 
 var myCenter= new google.maps.LatLng(38.947973         , -77.362595); // work 
 var home    = new google.maps.LatLng(38.943714299999996, -77.4067539); // home
-var markers = [
+var markersOLd = [
    ['work', 38.947973         , -77.362595, 2],
       ['home', 38.943714299999996, -77.4067539, 1] 
     ];
 
-;
+var markers = [];
+    markers["work"] = new google.maps.Marker({
+    position: new google.maps.LatLng(    38.947973 , -77.362595) ,
+    map: map,
+    title: 'Work 1 '
+  });
+
+
+
+
+markers["tkw"] =new google.maps.Marker({
+    position: new google.maps.LatLng(38.8945501,-77.4296397),
+    map: map,
+    title: 'TKWON DO '
+  });
+
+//markers["home"] =new google.maps.Marker({position: new google.maps.LatLng(38.943714299999996, -77.4067539),map: map,
+  //  title: 'Home '  });
+
+
+/*   new google.maps.Marker({
+    position: new google.maps.LatLng(markers[i][1], markers[i][2],
+    map: map,
+    title: 'Hello World!'
+  });
+*/
+
+
 var bounds = new google.maps.LatLngBounds();
 var map=null;
 
@@ -85,6 +112,73 @@ var destination=new google.maps.Marker({
     });
      
 
+function  drawMarkers(map){
+  console.log("drawing");
+  var infowindow = new google.maps.InfoWindow();
+ var marker, i;
+
+var keys  = Object.keys(markers);
+$.each(keys, function(index, value) { 
+  console.log(index + ': '+ value + " : "+markers[value]); 
+
+
+//   for (i = 0; i < markers.length; i++) {  
+      marker =  markers[value];
+
+       // bounds.extend(marker.position);
+ /*     google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(markers[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+*/
+//}
+});
+}
+
+// Adds a marker to the map and push to the array.
+function addMarker(location) {
+
+ //  ['work', 38.947973         , -77.362595, 2]
+console.log("adding " +location.lat() + " , " +  location.lng());
+  var newmarker = new google.maps.Marker({
+    position: location,
+    map: map
+
+  });
+
+ // var newMarker[] = [ "Your Selection", position.coords.latitude, position.coords.longitude ]; 
+  markers["selected"] = newmarker;
+}
+
+
+// Sets the map on all markers in the array.
+function setMapOnAll(map) {
+  var keys  = Object.keys(markers);
+$.each(keys, function(index, value) { 
+  console.log(index + ': '+ value + " : "+markers[value]); 
+   markers[value].setMap(map);
+  
+});
+   
+}
+
+// Removes the markers from the map, but keeps them in the array.
+function clearMarkers() {
+  setMapOnAll(null);
+}
+
+// Shows any markers currently in the array.
+function showMarkers() {
+  setMapOnAll(map);
+}
+
+// Deletes all markers in the array by removing references to them.
+function deleteMarkers() {
+  clearMarkers();
+  markers = [];
+}
 
 function initializeMaps()
 {
@@ -114,25 +208,15 @@ var mapProp = {
 
  map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
+ // This event listener will call addMarker() when the map is clicked.
+  map.addListener('click', function(event) {
+    addMarker(event.latLng);
+  });
  
-var infowindow = new google.maps.InfoWindow();
- var marker, i;
 
-    for (i = 0; i < markers.length; i++) {  
-      marker = new google.maps.Marker({
-        position: new google.maps.LatLng(markers[i][1], markers[i][2]),
-        map: map
-      });
+ setMapOnAll(map);  
 
-       // bounds.extend(marker.position);
-      google.maps.event.addListener(marker, 'click', (function(marker, i) {
-        return function() {
-          infowindow.setContent(markers[i][0]);
-          infowindow.open(map, marker);
-        }
-      })(marker, i));
-
-}}
+}
 
 
 
@@ -160,6 +244,7 @@ google.maps.event.addListener(destination, 'click', function() {
 */
 //}
 
+
 function placeMarker(location) {
   var marker = new google.maps.Marker({
       position: location, 
@@ -182,7 +267,7 @@ function placeMarker(location) {
   
   </div>
 
-  <div data-role="main" class="ui-content">
+  <div id="Main" data-role="main" class="ui-content">
       
  <!--        <div id="deviceready" class="blink">
             <p class="event listening">Connecting to Device</p>
@@ -196,8 +281,9 @@ function placeMarker(location) {
     <script type="text/javascript">
 	$(document).ready(function () {
   initializeMaps();
-          $("#b01").on("click", function(){
+       $("#b01").on("click", function(){
             ion.sound.play("bell_ring");
+            clearMarkers();
         });
 
         app.initialize();
@@ -207,7 +293,7 @@ function placeMarker(location) {
 	
 });
 	
-		
+  	
     </script>
 
 	 
@@ -216,7 +302,7 @@ function placeMarker(location) {
 
   </div>
 
-  <div data-role="footer">
+  <div id="footer" data-role="footer">
 
 
  
@@ -224,6 +310,12 @@ function placeMarker(location) {
     <button id="b01">Play "bell_ring"</button>
 <br>
   </div>
+
+
+<div data-role="panel" id="myPanel">
+  <h2>Panel Header..</h2>
+  <p>Some text..</p>
+</div>
 
 </div>
 	
@@ -233,4 +325,17 @@ function placeMarker(location) {
 	
 	
 </body>
+<script>
+ 
+
+
+$('#Main').on('swiperight', function () {
+    $('#myPanel').panel('open');
+});
+
+$('#Main').on('swipeleft', function () {
+    $('#myPanel').panel('close');
+});
+
+</script>
 </html>

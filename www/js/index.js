@@ -27,9 +27,10 @@
                             lng : 0 };
  
 var counter = 0;
+var incr = 0.01
 var app = {
   work :  { lat : 38.947973, lng :  -77.362595 }, // work 
-  home  :   new google.maps.LatLng(38.943714299999996, -77.4067539), // home
+  //home  :   new google.maps.LatLng(38.943714299999996, -77.4067539), // home
 
     // Application Constructor
     initialize: function() {
@@ -103,19 +104,39 @@ watchPosition  : function() {
 console.log("watching ");   
   var options = {
   enableHighAccuracy: false,
-  timeout: 5000,
+  timeout: 10000,
   maximumAge: 0
 };
   id = navigator.geolocation.watchPosition(function(position) {
 	   
+     console.log("before incr");   
      destination.setPosition(
 new google.maps.LatLng(
-            position.coords.latitude,
-            position.coords.longitude)
+            position.coords.latitude ,
+            position.coords.longitude )
       );
-     
+
+//destination.title="current";
+
+var infowindow = new google.maps.InfoWindow({
+    content: "<span>any html goes here</span>"
+});
 
  
+
+google.maps.event.addListener(destination, 'click', function() {
+  infowindow.open(map,destination);
+});
+
+
+
+     console.log("after incr");   
+     markers["current"] = destination;
+     setMapOnAll(null);
+     setTimeout(function(){ setMapOnAll(map);   }, 1000); 
+     
+//destination.setMap( map );
+     console.log("after set map");    
 
 			counter++;
 			console.log("this is in counter : "  + counter );
@@ -137,12 +158,36 @@ new google.maps.LatLng(
 
 		   	console.log(app.work.lat +  " in else the  WORK  = " + app.work.lng);			
 			
+
+      var keys  = Object.keys(markers);
+      var amarker;
+$.each(keys, function(index, value) { 
+
+  console.log(index + ': '+ value + " : "+markers[value]); 
+  if(value != "current") {
+//   for (i = 0; i < markers.length; i++) {  
+      amarker =  markers[value];
+
+//console.log(amarker.position.lat() + "  //  " +  amarker.position.lng());  
+
+
+
 			  var x =    app.getDistanceFromLatLonInKm(currentLocation.lat, currentLocation.lng,
-                        app.work.lat, app.work.lng);
-	document.getElementById('distance').innerHTML = "Counter ( "+ counter +")  the calculateDistance result is " + x;					
-						console.log("distance is " + x );
+                        amarker.position.lat(), amarker.position.lng());
+	document.getElementById('distance').innerHTML = "Counter ( "+ counter +") : DISTANCE["+ value+ "] = :  " + x;					
+						console.log("############### Counter ( "+ counter +") : DISTANCE["+ value+ "] = :  " + x);
 			
+
+
+
 			if ( x < 0.2 ) {
+
+
+        ion.sound.play("arrived");  
+      }
+        }
+    });
+
 				//$('#alert').play();
 		 
 //	  1 var my_media =  new Media("../media/arrived.wma",function () { console.log("playAudio():Audio Success"); });
@@ -153,7 +198,7 @@ new google.maps.LatLng(
 					//var audio = new Audio('../media/arrived.mp3');
                    //audio.play();
 
-  ion.sound.play("arrived");      
+      
 /* this is pure html5 worked
     var audio = $("#myaudio")[0];
 		 if (audio.paused) {
@@ -163,7 +208,7 @@ new google.maps.LatLng(
         audio.currentTime = 0
     }
 */				 //$('#alert').play(); 
-			}				 
+							 
 				}
 	}, function error(err){
 		 console.warn('ERROR in watchPosition(' + err.code + '): ' + err.message);
