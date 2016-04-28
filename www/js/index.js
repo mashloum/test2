@@ -25,16 +25,49 @@
                             lng : 0 };
     var previousLocation = { lat : 0,
                             lng : 0 };
- 
 var counter = 0;
-var incr = 0.01
+var userInput = 0;
+var incr = 0.01;
+var myCenter= new google.maps.LatLng(38.947973         , -77.362595); // work 
+var home    = new google.maps.LatLng(38.943714299999996, -77.4067539); // home
+var map=null;
+
+var markers = [];
+
+
+var bounds ; 
+
+/*var markersOLd = [
+   ['work', 38.947973         , -77.362595, 2],
+      ['home', 38.943714299999996, -77.4067539, 1] 
+    ];
+
+  markers["work"] = new google.maps.Marker({
+    position: new google.maps.LatLng(    38.947973 , -77.362595) ,
+    map: map,
+    title: 'Work 1 '
+  });
+
+
+markers["tkw"] =new google.maps.Marker({
+    position: new google.maps.LatLng(38.8945501,-77.4296397),
+    map: map,
+    title: 'TKWON DO '
+  });
+*/
+
+var destination=new google.maps.Marker({
+  position:myCenter,
+  });
+
 var app = {
+
   work :  { lat : 38.947973, lng :  -77.362595 }, // work 
   //home  :   new google.maps.LatLng(38.943714299999996, -77.4067539), // home
 
     // Application Constructor
     initialize: function() {
-	//	alert( " app.initialize " +home.lat() + " " + home.lng() );
+  //       this.initializeMaps();
         this.bindEvents();
     },
 	
@@ -86,6 +119,112 @@ var app = {
   return deg * (Math.PI/180)
 },
 
+
+
+
+// Sets the map on all markers in the array.
+ setMapOnAll : function(map) {
+  var keys  = Object.keys(markers);
+  var mybounds = new google.maps.LatLngBounds();
+  
+if(map) { 
+$.each(keys,  function(index, value) { 
+  console.log(" setMapOnALL" +index + ': '+ value + " : "+markers[value]); 
+   markers[value].setMap(map);
+  mybounds.extend( markers[value].getPosition());
+});
+ 
+  if(keys.length > 1 && map) {
+      map.fitBounds(mybounds);
+  }
+}
+   
+},
+
+
+// Adds a marker to the map and push to the array.
+ addMarker : function(location) {
+
+  //  ['work', 38.947973         , -77.362595, 2]
+console.log("adding " +location.lat() + " , " +  location.lng());
+userInput++;
+  var newmarker = new google.maps.Marker({
+    position: location,
+    map: map
+  });
+
+ // var newMarker[] = [ "Your Selection", position.coords.latitude, position.coords.longitude ]; 
+  markers["selected"+userInput] = newmarker;
+  app.setMapOnAll(map);
+},
+
+
+//Removes markers from the map, but keeps them in the array.
+clearMarkers : function() {
+  app.setMapOnAll(null);
+  markers=[];
+  userInput=0;
+},
+
+// Shows any markers currently in the array.
+ showMarkers : function() {
+  app.setMapOnAll(map);
+},
+
+
+ placeMarker : function(location) {
+  var marker = new google.maps.Marker({
+      position: location, 
+      map: map
+  });
+
+  map.setCenter(location);
+},
+
+ initializeMaps: function()
+{
+// alert("intitialize Maps");
+ion.sound({
+    sounds: [
+        {
+            name: "bell_ring"
+        },
+        {
+            name: "arrived"
+        },
+         
+         
+    ],
+    volume: 1,
+    path: "media/",
+    preload: true
+});
+
+var mapProp = {
+  center:myCenter,
+  zoom:12,
+  mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+
+ map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+ // This event listener will call addMarker() when the map is clicked.
+  map.addListener('click', function(event) {
+    app.addMarker(event.latLng);
+  });
+ 
+
+ this.setMapOnAll(map);  
+
+},
+
+
+Recalculate : function(){
+console.log("Recalculate :  markers.length="+markers.length);
+//console.log(destination); 
+
+},
+
  getCurrentLocation : function() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -93,6 +232,7 @@ var app = {
 			console.log(" the getCurrentLocation latitude :"+position.coords.latitude + "  longtitude : "  + position.coords.longitude);
 			currentLocation.lat=position.coords.latitude;
 			currentLocation.lng=position.coords.longitude;	
+
 	});
     } else {
         x.innerHTML = "Geolocation is not supported by this browser.";
@@ -103,11 +243,13 @@ watchPosition  : function() {
 
 console.log("watching ");   
   var options = {
-  enableHighAccuracy: false,
-  timeout: 10000,
+  enableHighAccuracy: true,
+  timeout: 5000,
   maximumAge: 0
 };
-  id = navigator.geolocation.watchPosition(function(position) {
+
+
+  id = jQuery.proxy(navigator.geolocation.watchPosition(function(position) {
 	   
      console.log("before incr");   
      destination.setPosition(
@@ -124,46 +266,47 @@ var infowindow = new google.maps.InfoWindow({
 
  
 
-google.maps.event.addListener(destination, 'click', function() {
-  infowindow.open(map,destination);
-});
-
-
-
-     console.log("after incr");   
+//google.maps.event.addListener(destination, 'click', function() {
+ // infowindow.open(map,destination);
+//});
+//   console.log("after incr");   
      markers["current"] = destination;
-     setMapOnAll(null);
-     setTimeout(function(){ setMapOnAll(map);   }, 1000); 
+     app.setMapOnAll(null);
+     app.setMapOnAll(map);
+     //setTimeout(function(){ setMapOnAll(map);   }, 1000); 
      
 //destination.setMap( map );
-     console.log("after set map");    
+    // console.log("WA  after set map");    
 
+     //app.Recalculate();
 			counter++;
-			console.log("this is in counter : "  + counter );
-			console.log("mywatch latitude :"+position.coords.latitude + "  longtitude : "  + position.coords.longitude);
+			console.log("WA this is in counter : "  + counter );
+			console.log("WA Result of Watch Position  latitude :"+position.coords.latitude + "  longtitude : "  + position.coords.longitude);
 			if(previousLocation.lat = 0 ) {
 				previousLocation.lat=position.coords.latitude;
 				previousLocation.lng=position.coords.longitude;	
 			currentLocation.lat=position.coords.latitude;
 			currentLocation.lng=position.coords.longitude;	
 				 
-				console.log(previousLocation.lat  + " <---- lat  previous was null  now lan ---> " + previousLocation.lng );
+				console.log("WA : " + previousLocation.lat  + " <---- lat  previous was null  now lan ---> " + previousLocation.lng );
 			} 
 	else {
 				previousLocation=currentLocation;
 			currentLocation.lat=position.coords.latitude;
 			currentLocation.lng=position.coords.longitude;	
-			console.log(previousLocation.lat  + " <---- lat  previous in else  lan ---> " + previousLocation.lng );
-		   	console.log(currentLocation.lat +  " in else the current location  = " + currentLocation.lng);			
+			console.log("WA else 1 : " +previousLocation.lat  + " <---- lat  previous in else  lan ---> " + previousLocation.lng );
+		   	console.log("WA else 2: " +currentLocation.lat +  " in else the current location  = " + currentLocation.lng);			
 
-		   	console.log(app.work.lat +  " in else the  WORK  = " + app.work.lng);			
+		   	console.log("WA else 3 : " +app.work.lat +  " in else the  WORK  = " + app.work.lng);			
 			
 
       var keys  = Object.keys(markers);
       var amarker;
+      if(keys.length > 0 ) {
+        document.getElementById('distance').innerHTML = "";
 $.each(keys, function(index, value) { 
 
-  console.log(index + ': '+ value + " : "+markers[value]); 
+  console.log(" WA each Loop  : " +index + ': '+ value + " : "+markers[value]); 
   if(value != "current") {
 //   for (i = 0; i < markers.length; i++) {  
       amarker =  markers[value];
@@ -174,19 +317,20 @@ $.each(keys, function(index, value) {
 
 			  var x =    app.getDistanceFromLatLonInKm(currentLocation.lat, currentLocation.lng,
                         amarker.position.lat(), amarker.position.lng());
-	document.getElementById('distance').innerHTML = "Counter ( "+ counter +") : DISTANCE["+ value+ "] = :  " + x;					
+	document.getElementById('distance').innerHTML += "Wcalc Counter ( "+ counter +") : DISTANCE["+ value+ "] = :  " + x;					
 						console.log("############### Counter ( "+ counter +") : DISTANCE["+ value+ "] = :  " + x);
 			
 
 
 
-			if ( x < 0.2 ) {
+			if ( x < 0.4 ) {
 
 
         ion.sound.play("arrived");  
       }
         }
     });
+}
 
 				//$('#alert').play();
 		 
@@ -212,17 +356,9 @@ $.each(keys, function(index, value) {
 				}
 	}, function error(err){
 		 console.warn('ERROR in watchPosition(' + err.code + '): ' + err.message);
-	}, options );
+	}, options ), this);
 	
-
-
-if(currentLocation.lat != 0 ) {  
-
-  var x =    this.getDistanceFromLatLonInKm(currentLocation.lat, currentLocation.lng,
-                        this.work.lat, this.work.lng());
-	document.getElementById('distance').innerHTML =  " the calculateDistance result is " + x;					
-						console.log("distance is " + x );
-} /* else {
+ /* else {
 	console.log("trigger else calculateDistance");
 		console.log(" home " + this.home.toString );
  
