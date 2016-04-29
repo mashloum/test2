@@ -125,7 +125,7 @@
 
 
 
-<div data-role="page" data-dialog="true" id="pagetwo" data-dismissible="true">
+<div data-role="page" data-dialog="true" id="panel2" data-dismissible="true">
   <div data-role="header">
     <h1>Bazaria LLC</h1>
   </div>
@@ -156,6 +156,7 @@
 
 $('#Main').on('swiperight', function () {
     $('#myPanel').panel('open');
+     $('#panel2').panel('open');
 });
 
 $('#Main').on('swipeleft', function () {
