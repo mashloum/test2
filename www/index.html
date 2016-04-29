@@ -109,23 +109,7 @@
   </div>
 
 
-<div data-role="panel" id="myPanel" data-dismissible="true">
-  <h2>Options</h2>
-
-     <button class="ui-btn ui-icon-search ui-btn-icon-left">Search For Location</button>
-     <button  id="resetButton" class="ui-btn ui-icon-search ui-btn-icon-left">Reset Locations</button>
-
-</div>
-
-</div>
-	
-<audio id="myaudio" hidden controls="controls">
-<source src="../media/arrived.mp3" type="audio/mpeg">
-</source></audio>
-
-
-
-<div data-role="page" data-dialog="true" id="panel2" data-dismissible="true">
+<div data-role="popup"   id="panel2" >
   <div data-role="header">
     <h1>Bazaria LLC</h1>
   </div>
@@ -140,14 +124,35 @@
     <b> Mashloum@Gmail.com </b>
     <a href="#pageone">Go to Page One</a>
   </div>
-
- 
 </div> 
 
+<div data-role="panel" id="myPanel" data-dismissible="true">
+  <h2>Options</h2>
+
+     <button id="searchButton"  class="ui-btn ui-icon-search ui-btn-icon-left">Search For Location</button>
+     <button  id="resetButton" class="ui-btn  ui-btn-icon-left">Reset Locations</button>
+
+     <button  id="distanceBut" class="ui-btn  ui-btn-icon-left">Set Alert Distance </button>
+    
+<!-- <a href="#panel2" id="aboutButton" class="ui-btn  ui-btn-icon-left" >About Us</a>
+ -->
+<a href="#panel2" data-rel="popup"  data-transition="fade" class="ui-btn ui-corner-all ui-shadow "> mAbout Us</a> 
+
+  <!--    <button  id="aboutButton" class="ui-btn  ui-btn-icon-left"> About Us </button> -->
+</div>
+
+</div>
+	
+<audio id="myaudio" hidden controls="controls">
+<source src="../media/arrived.mp3" type="audio/mpeg">
+</source></audio>
+
+
+
+
 
 	
 	
-</body>
 
 
 <script>
@@ -156,12 +161,14 @@
 
 $('#Main').on('swiperight', function () {
     $('#myPanel').panel('open');
-     $('#panel2').panel('open');
+    
 });
 
 $('#Main').on('swipeleft', function () {
     $('#myPanel').panel('close');
 });
+
+
 
 
 
@@ -178,7 +185,11 @@ $('#Main').on('swipeleft', function () {
             app.clearMarkers();
         });
 
-      
+/*
+$("#aboutButton").on("click", function(){
+     $('#panel2').panel('open');
+    });*/
+         
     //app.deg2rad(10);
     
     app.watchPosition();
@@ -187,6 +198,7 @@ $('#Main').on('swipeleft', function () {
   
     
     </script>
+</body>
 
 
 </html>

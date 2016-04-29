@@ -127,7 +127,7 @@ var app = {
   var keys  = Object.keys(markers);
   var mybounds = new google.maps.LatLngBounds();
   
-if(map) { 
+//if(map) { 
 $.each(keys,  function(index, value) { 
   console.log(" setMapOnALL" +index + ': '+ value + " : "+markers[value]); 
    markers[value].setMap(map);
@@ -137,7 +137,7 @@ $.each(keys,  function(index, value) {
   if(keys.length > 1 && map) {
       map.fitBounds(mybounds);
   }
-}
+//}
    
 },
 
